@@ -1,0 +1,116 @@
+formatVersion: 1
+inputs:
+  os:
+    type: string
+    title: Sistema Operativo
+    oneOf:
+      - title: RedHat 8.0 Ingles
+        const: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.0_ENG
+      - title: RedHat 8.0 Español
+        const: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.0_ESP
+      - title: RedHat 8.4 Ingles
+        const: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.4_ENG
+      - title: RedHat 8.4 Español
+        const: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.4_ESP
+  cpuCount:
+    type: integer
+    title: Número CPUs
+    description: Seleccione el número de CPUs
+    minimum: 1
+    maximum: 32
+  memoryCount:
+    type: integer
+    title: Memoria (GB)
+    description: Seleccione la cantidad de Memoria
+    minimum: 1
+    maximum: 256
+  justification:
+    type: string
+    title: Justificación
+    description: Esta petición requiere justificación debido al número de CPUs o a la cantidad de memoria seleccionada. Por favor, introduzca la justificación y su aprobación será evaluada.
+  network:
+    type: string
+    title: Selecciona Red
+    oneOf:
+      - title: Front-End
+        const: red-servicio:frnd
+      - title: Back-End
+        const: red-servicio:bknd
+      - title: Servicio-Usuarios
+        const: red-servicio:srvc-usrs
+  rootPassword:
+    type: string
+    title: Contraseña usuario root
+    encrypted: true
+    readOnly: false
+    description: Contraseña de Root
+    minLength: 8
+    pattern: ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_\[\]\()\/\~=+#?!@$%^&*-]).{8,}$
+  repeatRootPassword:
+    type: string
+    encrypted: true
+    readOnly: false
+    title: Repetir Contraseña Root
+  adminPassword:
+    type: string
+    title: Contraseña usuario admin
+    readOnly: false
+    encrypted: true
+    minLength: 8
+    pattern: ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_\[\]\()\/\~=+#?!@$%^&*-]).{8,}$
+  repeatAdminPassword:
+    type: string
+    encrypted: true
+    title: Repetir Contraseña admin
+resources:
+  Maquina_Virtual:
+    type: Cloud.vSphere.Machine
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      imageRef: ${input.os}
+      cpuCount: ${input.cpuCount}
+      totalMemoryMB: ${input.memoryCount*1024}
+      snapshotLimit: 3
+      Infoblox.IPAM.Network0.hostnameNicSuffix: ''
+      Infoblox.IPAM.Network1.hostnameNicSuffix: ''
+      folderName: ${"Entidades/" + env.projectName}
+      rootPassword: ${input.rootPassword}
+      repeatRootPassword: ${input.repeatRootPassword}
+      adminPassword: ${input.adminPassword}
+      repeatAdminPassword: ${input.repeatAdminPassword}
+      customizationSpec: Customization-vRealizeAutomation-Linux
+      constraints:
+        - tag: recursos:linux
+      networks:
+        - network: ${resource.Red_Servicio.id}
+          assignment: static
+        - network: ${resource.Red_Gestion.id}
+          assignment: static
+          gateway: ''
+  Red_Servicio:
+    type: Cloud.vSphere.Network
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      networkType: existing
+      constraints:
+        - tag: ${input.network}
+        - tag: red-gestion:falso
+        - tag: segmentos:overlay
+  Red_Gestion:
+    type: Cloud.vSphere.Network
+    metadata:
+      layoutPosition:
+        - 2
+        - 0
+    properties:
+      networkType: existing
+      constraints:
+        - tag: ${input.network}
+        - tag: red-gestion:verdadero
+        - tag: segmentos:overlay

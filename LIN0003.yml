@@ -1,0 +1,373 @@
+layout:
+  pages:
+    - id: page_general
+      sections:
+        - id: section_project
+          fields:
+            - id: project
+              display: dropDown
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_deploymentName
+          fields:
+            - id: deploymentName
+              display: textField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_4bbca8d3
+          fields:
+            - id: description
+              display: textArea
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_os
+          fields:
+            - id: os
+              display: dropDown
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_cpuCount
+          fields:
+            - id: cpuCount
+              display: dropDown
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_memoryCount
+          fields:
+            - id: memoryCount
+              display: dropDown
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_justification
+          fields:
+            - id: justification
+              display: textArea
+              state:
+                visible:
+                  - '>':
+                      cpuCount: 16
+                    value: true
+                  - '>':
+                      memoryCount: 128
+                    value: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_networkManagementEnabled
+          fields:
+            - id: networkManagementEnabled
+              display: checkbox
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_networkService
+          fields:
+            - id: networkService
+              display: textField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_ipAddressService
+          fields:
+            - id: ipAddressService
+              display: textField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_networkManagement
+          fields:
+            - id: networkManagement
+              display: textField
+              state:
+                visible:
+                  - value: true
+                    equals:
+                      networkManagementEnabled: true
+                  - value: false
+                    equals:
+                      networkManagementEnabled: false
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_ipAddressManagement
+          fields:
+            - id: ipAddressManagement
+              display: textField
+              state:
+                visible:
+                  - value: true
+                    equals:
+                      networkManagementEnabled: true
+                  - value: false
+                    equals:
+                      networkManagementEnabled: false
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_rootPassword
+          fields:
+            - id: rootPassword
+              display: passwordField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_repeatRootPassword
+          fields:
+            - id: repeatRootPassword
+              display: passwordField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_adminPassword
+          fields:
+            - id: adminPassword
+              display: passwordField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+        - id: section_repeatAdminPassword
+          fields:
+            - id: repeatAdminPassword
+              display: passwordField
+              state:
+                visible: true
+                read-only: false
+              signpostPosition: right-middle
+      title: General
+schema:
+  project:
+    label: Proyecto
+    type:
+      dataType: string
+      isMultiple: false
+    valueList:
+      id: projects
+      type: scriptAction
+    constraints:
+      required: true
+  deploymentName:
+    label: Despliegue
+    type:
+      dataType: string
+      isMultiple: false
+    constraints:
+      required: true
+      max-value: 900
+  description:
+    label: Descripción
+    type:
+      dataType: string
+      isMultiple: false
+    constraints:
+      max-value: 256
+  os:
+    label: Sistema Operativo
+    type:
+      dataType: string
+      isMultiple: false
+    valueList:
+      - label: RedHat 8.0 Ingles
+        value: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.0_ENG
+      - label: RedHat 8.0 Español
+        value: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.0_ESP
+      - label: RedHat 8.4 Ingles
+        value: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.4_ENG
+      - label: RedHat 8.4 Español
+        value: w01-clnegro-pro-001 / GN_AGE_REDHAT_8.4_ESP
+    constraints:
+      required: true
+  cpuCount:
+    label: Número CPUs
+    description: Seleccione el número de CPUs
+    signpost: Seleccione el número de CPUs
+    type:
+      dataType: integer
+      isMultiple: false
+    valueList:
+      - label: 1  CPU
+        value: 1
+      - label: 2  CPUs
+        value: 2
+      - label: 4  CPUs
+        value: 4
+      - label: 8  CPUs
+        value: 8
+      - label: 16 CPUs
+        value: 16
+      - label: 32 CPUs Requiere Aprobación
+        value: 32
+    constraints:
+      required: true
+      max-value: 32
+      min-value: 1
+  memoryCount:
+    label: Memoria (GB)
+    description: Seleccione la cantidad de Memoria
+    signpost: Seleccione la cantidad de Memoria
+    type:
+      dataType: integer
+      isMultiple: false
+    valueList:
+      - label: 1  CPU
+        value: 1
+      - label: 2  CPUs
+        value: 2
+      - label: 4  CPUs
+        value: 4
+      - label: 8  CPUs
+        value: 8
+      - label: 16 CPUs
+        value: 16
+      - label: 32 CPUs Requiere Aprobación
+        value: 32
+    constraints:
+      required: true
+      max-value: 256
+      min-value: 1
+  justification:
+    label: Justificación
+    description: >-
+      Esta petición requiere justificación debido al número de CPUs o a la
+      cantidad de memoria seleccionada. Por favor, introduzca la justificación y
+      su aprobación será evaluada.
+    signpost: >-
+      Esta petición requiere justificación debido al número de CPUs o a la
+      cantidad de memoria seleccionada. Por favor, introduzca la justificación y
+      su aprobación será evaluada.
+    type:
+      dataType: string
+      isMultiple: false
+    default:
+      - <:
+          cpuCount: 32
+        value: No requiere Justificación
+      - <:
+          memoryCount: 256
+        value: No requiere Justificación
+      - '>':
+          cpuCount: 16
+        value: '#unset'
+      - '>':
+          memoryCount: 128
+        value: '#unset'
+    constraints:
+      required: true
+  networkManagementEnabled:
+    label: Habilitar la red de gestión
+    type:
+      dataType: boolean
+      isMultiple: false
+    default: true
+  networkService:
+    label: Selecciona Red Servicio
+    type:
+      dataType: string
+      isMultiple: false
+    constraints:
+      required: true
+  ipAddressService:
+    label: IP Servicio
+    description: Introduzca una dirección ip valida
+    signpost: Introduzca una dirección ip valida
+    type:
+      dataType: string
+      isMultiple: false
+    constraints:
+      pattern:
+        value: ^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$
+        message: >-
+          Constraint Description: must be compliant with
+          ^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$ regular expression.
+      required: true
+  networkManagement:
+    label: Selecciona Red Gestión
+    type:
+      dataType: string
+      isMultiple: false
+    default:
+      - value: none
+        equals:
+          networkManagementEnabled: false
+    constraints:
+      required: true
+  ipAddressManagement:
+    label: IP Gestion
+    description: Introduzca una dirección ip valida
+    signpost: Introduzca una dirección ip valida
+    type:
+      dataType: string
+      isMultiple: false
+    default:
+      - value: 0.0.0.0
+        equals:
+          networkManagementEnabled: false
+    constraints:
+      pattern:
+        value: ^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$
+        message: >-
+          Constraint Description: must be compliant with
+          ^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$ regular expression.
+      required: true
+  rootPassword:
+    label: Contraseña usuario root
+    description: Contraseña de Root
+    signpost: Contraseña de Root
+    type:
+      dataType: secureString
+      isMultiple: false
+    constraints:
+      pattern:
+        value: >-
+          ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_\[\]\()\/\~=+#?!@$%^&*-]).{8,}$
+        message: >-
+          Constraint Description: must be compliant with
+          ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_\[\]\()\/\~=+#?!@$%^&*-]).{8,}$
+          regular expression.
+      required: true
+      min-value: 8
+  repeatRootPassword:
+    label: Repetir Contraseña Root
+    type:
+      dataType: secureString
+      isMultiple: false
+    constraints:
+      required: true
+  adminPassword:
+    label: Contraseña usuario admin
+    type:
+      dataType: secureString
+      isMultiple: false
+    constraints:
+      pattern:
+        value: >-
+          ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_\[\]\()\/\~=+#?!@$%^&*-]).{8,}$
+        message: >-
+          Constraint Description: must be compliant with
+          ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_\[\]\()\/\~=+#?!@$%^&*-]).{8,}$
+          regular expression.
+      required: true
+      min-value: 8
+  repeatAdminPassword:
+    label: Repetir Contraseña admin
+    type:
+      dataType: secureString
+      isMultiple: false
+    constraints:
+      required: true
+options:
+  externalValidations: []
